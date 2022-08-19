@@ -4,15 +4,19 @@ export function ResultsTable({ records }) {
   return (
     <table>
       <thead>
-        {keys.map((key) => (
-          <th key={key}>{key}</th>
-        ))}
+        <tr>
+          {keys.map((key) => (
+            <th key={key}>{key}</th>
+          ))}
+        </tr>
       </thead>
       <tbody>
-        {records.map((record) => (
-          <tr>
+        {records.map((record, i) => (
+          <tr key={i}>
             {keys.map((key) => (
-              <td key={key}>{record[key]}</td>
+              <td key={key}>
+                <code>{record[key]}</code>
+              </td>
             ))}
           </tr>
         ))}

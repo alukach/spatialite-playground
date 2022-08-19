@@ -16,6 +16,11 @@ const dbConfig = {
 };
 let maxBytesToRead = 10 * 1024 * 1024; // optional, defaults to Infinity
 
+/**
+ *
+ * @param {string} query
+ * @returns
+ */
 export function useQuery(query) {
   // Build Worker
   const [worker, setWorker] = useState();
@@ -41,6 +46,7 @@ export function useQuery(query) {
 
       // you can reset bytesRead by assigning to it:
       worker.worker.bytesRead = 0;
+    //   worker.db
     });
   }, [query, worker]);
 
