@@ -3,7 +3,7 @@ import { createDbWorker } from "sql.js-httpvfs";
 import sqlWorkerUrl from "url:sql.js-httpvfs/dist/sqlite.worker.js";
 // import sqlWasmUrl from "url:sql.js-httpvfs/dist/sql-wasm.wasm";
 import sqlWasmUrl from "url:sql.js-httpvfs/dist/sql-wasm.wasm";
-import dbUrl from "url:../chinook.db";
+import dbUrl from "url:../stac.sqlite";
 
 // the config is either the url to the create_db script, or a inline configuration:
 const config = {
@@ -29,11 +29,11 @@ createDbWorker(
   maxBytesToRead // optional, defaults to Infinity
 ).then(async (worker) => {
   const rows = await worker.db.exec(
-    `SELECT Track.* FROM Track, Album, Artist WHERE Track.AlbumId = Album.AlbumId AND Album.ArtistId = Artist.ArtistId AND Artist.Name = 'Frank Zappa & Captain Beefheart';`
-  )
+    `SELECT id FROM items WHERE datetime >= '2021-12-12T00:00:00Z' AND datetime < '2021-12-12T01:00:00Z';`
+  );
   const records = buildRecords(rows.pop());
   console.log(records);
-  
+
   // worker.worker.bytesRead is a Promise for the number of bytes read by the worker.
   // if a request would cause it to exceed maxBytesToRead, that request will throw a SQLite disk I/O error.
   console.log(await worker.worker.bytesRead);

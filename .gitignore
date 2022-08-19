@@ -1,4 +1,7 @@
 node_modules
 .parcel-cache
 dist
-chinook.db
+*.db
+*.sqlite
+*.ndjson
+*.ndjs

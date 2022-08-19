@@ -3,5 +3,10 @@
 ## Setup
 
 ```sh
-sqlite3 chinook.db < bootstrap.sql
+cat smallsats_items_2021-12-01.ndjs | jq -c 'with_entries(select([.key] | inside(["id", "datetime"])))' |
+npx -p @ndjson-utils/sqlite to-sql -t items -f stac.sqlite -pk id
+```
+
+```
+sqlite3 stac.sqlite "CREATE INDEX IF NOT EXISTS datetime ON items(datetime); vacuum"
 ```
