@@ -1,31 +1,43 @@
-import initSqlJs from "sql.js";
+import { createDbWorker } from "sql.js-httpvfs";
 
-import sqlWasm from "url:../node_modules/sql.js/dist/sql-wasm.wasm";
+import sqlWorkerUrl from "url:sql.js-httpvfs/dist/sqlite.worker.js";
+// import sqlWasmUrl from "url:sql.js-httpvfs/dist/sql-wasm.wasm";
+import sqlWasmUrl from "url:sql.js-httpvfs/dist/sql-wasm.wasm";
+import dbUrl from "url:../chinook.db";
 
-config = {
-  locateFile: () => sqlWasm,
+// the config is either the url to the create_db script, or a inline configuration:
+const config = {
+  from: "inline",
+  config: {
+    serverMode: "full", // file is just a plain old full sqlite database
+    requestChunkSize: 4096, // the page size of the  sqlite database (by default 4096)
+    url: dbUrl, // url to the database (relative or full)
+  },
 };
 
-// The `initSqlJs` function is globally provided by all of the main dist files if loaded in the browser.
-// We must specify this locateFile function if we are loading a wasm file from anywhere other than the current html page's folder.
-initSqlJs(config).then(function (SQL) {
-  //Create the database
-  const db = new SQL.Database();
-  // Run a query without reading the results
-  db.run("CREATE TABLE test (col1, col2);");
-  // Insert two rows: (1,111) and (2,222)
-  db.run("INSERT INTO test VALUES (?,?), (?,?)", [1, 111, 2, 222]);
-
-  // Prepare a statement
-  const stmt = db.prepare(
-    "SELECT * FROM test WHERE col1 BETWEEN $start AND $end"
+function buildRecords({ columns, values }) {
+  return values.map((value) =>
+    Object.fromEntries(value.map((v, i) => [columns[i], v]))
   );
-  stmt.getAsObject({ $start: 1, $end: 1 }); // {col1:1, col2:111}
+}
 
-  // Bind new values
-  stmt.bind({ $start: 1, $end: 2 });
-  while (stmt.step()) {
-    const row = stmt.getAsObject();
-    console.log("Here is a row: " + JSON.stringify(row));
-  }
+let maxBytesToRead = 10 * 1024 * 1024;
+createDbWorker(
+  [config],
+  sqlWorkerUrl,
+  sqlWasmUrl,
+  maxBytesToRead // optional, defaults to Infinity
+).then(async (worker) => {
+  const rows = await worker.db.exec(
+    `SELECT Track.* FROM Track, Album, Artist WHERE Track.AlbumId = Album.AlbumId AND Album.ArtistId = Artist.ArtistId AND Artist.Name = 'Frank Zappa & Captain Beefheart';`
+  )
+  const records = buildRecords(rows.pop());
+  console.log(records);
+  
+  // worker.worker.bytesRead is a Promise for the number of bytes read by the worker.
+  // if a request would cause it to exceed maxBytesToRead, that request will throw a SQLite disk I/O error.
+  console.log(await worker.worker.bytesRead);
+
+  // you can reset bytesRead by assigning to it:
+  worker.worker.bytesRead = 0;
 });

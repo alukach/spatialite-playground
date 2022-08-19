@@ -16,6 +16,6 @@
     "stream-browserify": "^3.0.0"
   },
   "dependencies": {
-    "sql.js": "^1.7.0"
+    "sql.js-httpvfs": "^0.8.11"
   }
 }

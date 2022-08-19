@@ -993,6 +993,11 @@ color-name@~1.1.4:
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
+comlink@^4.3.0:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/comlink/-/comlink-4.3.1.tgz#0c6b9d69bcd293715c907c33fe8fc45aecad13c5"
+  integrity sha512-+YbhUdNrpBZggBAHWcgQMLPLH1KDF3wJpeqrCKieWQ8RL7atmgsgTQko1XEBK6PsecfopWNntopJ+ByYG1lRaA==
+
 commander@^2.20.0:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
@@ -1654,10 +1659,12 @@ source-map@^0.6.0, source-map@^0.6.1:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
-sql.js@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/sql.js/-/sql.js-1.7.0.tgz#cadfed9773b643fbba0fc1ed1847e3a647e1fcb9"
-  integrity sha512-qAfft3xkSgHqmmfNugWTp/59PsqIw8gbeao5TZmpmzQQsAJ49de3iDDKuxVixidYs6dkHNksY8m27v2dZNn2jw==
+sql.js-httpvfs@^0.8.11:
+  version "0.8.11"
+  resolved "https://registry.yarnpkg.com/sql.js-httpvfs/-/sql.js-httpvfs-0.8.11.tgz#f2359e3c37e15e1d5c0de28aa91301040808fb6a"
+  integrity sha512-OBgj77Z3yAdxJ3HlC5BPVqIaWLqXn+q8KYAi+shR3iHwSglXE2NzsOIZsCs9fQfrtU6Qu5fqAMWAX4NaxeADew==
+  dependencies:
+    comlink "^4.3.0"
 
 stable@^0.1.8:
   version "0.1.8"
