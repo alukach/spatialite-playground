@@ -1,8 +1,10 @@
-export function ResultsTable({ records }) {
+const stacUrl = "https://csdap.earthdata.nasa.gov/pgstac";
+
+export function ResultsTable({ records, className }) {
   const keys = Object.keys(records[0]);
 
   return (
-    <table>
+    <table className={className}>
       <thead>
         <tr>
           {keys.map((key) => (
@@ -15,7 +17,16 @@ export function ResultsTable({ records }) {
           <tr key={i}>
             {keys.map((key) => (
               <td key={key}>
-                <code>{record[key]}</code>
+                {key === "id" && "id" in record && "collection" in record ? (
+                  <a
+                    href={`${stacUrl}/collections/${record["collection"]}/items/${record["id"]}`}
+                    target="_blank"
+                  >
+                    <code>{record[key]}</code>
+                  </a>
+                ) : (
+                  <code>{record[key]}</code>
+                )}
               </td>
             ))}
           </tr>
