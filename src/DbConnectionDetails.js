@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import defaultDbUrl from "url:../stac.sqlite";
-import defaultSpatialDbUrl from "url:../db_large.sqlite";
+import defaultDbUrl from "url:../example.sqlite";
 
 export const DbConnectionDetails = ({ onSubmit }) => {
   const [dbUrl, setDbUrl] = useState(defaultDbUrl);
