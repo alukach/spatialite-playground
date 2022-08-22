@@ -23,7 +23,7 @@ jobs:
           MEDIA_BASE: "https://media.githubusercontent.com/media/${{ github.repository }}/${{ github.ref }}/"
         run: |
           yarn install --frozen-lockfile  # npm ci
-          yarn run build --public-url ${{ github.event.repository.name }}
+          yarn run build --public-url /${{ github.event.repository.name }}
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
