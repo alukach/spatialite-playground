@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import defaultDbUrl from "url:../example.sqlite";
+import _defaultDbUrl from "url:../example.sqlite";
+
+// Hack to serve SQLite file from Github LFS
+// https://github.com/git-lfs/git-lfs/issues/1342#issuecomment-467321479
+let defaultDbUrl = _defaultDbUrl;
+if (process.env.MEDIA_BASE) {
+  const filepath = new URL(_defaultDbUrl).pathname.slice(1);
+  defaultDbUrl = new URL(filepath, process.env.MEDIA_BASE).toString();
+}
 
 export const DbConnectionDetails = ({ onSubmit }) => {
   const [dbUrl, setDbUrl] = useState(defaultDbUrl);
