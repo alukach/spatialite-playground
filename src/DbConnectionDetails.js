@@ -6,7 +6,10 @@ import _defaultDbUrl from "url:../example.sqlite";
 let defaultDbUrl = _defaultDbUrl;
 if (process.env.MEDIA_BASE) {
   const filepath = new URL(_defaultDbUrl).pathname.slice(1);
-  defaultDbUrl = new URL(filepath, process.env.MEDIA_BASE).toString();
+  defaultDbUrl = new URL(
+    filepath.split("/").pop(), // HACK: Only preserves filename, disregards rest of path
+    process.env.MEDIA_BASE
+  ).toString();
 }
 
 export const DbConnectionDetails = ({ onSubmit }) => {
