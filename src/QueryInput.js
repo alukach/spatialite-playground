@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 
 const defaultQuery = `
-SELECT 
-  id,
-  datetime
-FROM 
-  items 
-WHERE 
-  datetime >= '2021-12-12T00:00:00Z' 
-  AND 
-  datetime < '2021-12-12T01:00:00Z' 
-;
+  SELECT
+      name,
+      AsGeoJSON(geometry)
+  FROM
+      pois_polygon
+  WHERE
+      MBRIntersects(
+          BuildMBR(575800, 244739, 575902, 244647),
+          geometry
+      )
+  LIMIT
+    10
 `.trim();
 
 export function QueryInput({ onSubmit, className }) {

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 
+import SPL from "spl.js";
 import { createDbWorker } from "sql.js-httpvfs";
 
 import sqlWorkerUrl from "url:sql.js-httpvfs/dist/sqlite.worker.js";
-import sqlWasmUrl from "url:sql.js-httpvfs/dist/sql-wasm.wasm";
+// import sqlWasmUrl from "url:sql.js-httpvfs/dist/sql-wasm.wasm";
+import sqlWasmUrl from "url:spl.js/dist/spl.wasm";
 
 let maxBytesToRead = 10 * 1024 * 1024; // optional, defaults to Infinity
 
@@ -16,20 +18,23 @@ export function useQuery(query, dbConfig) {
   const [worker, setWorker] = useState();
   const [records, setRecords] = useState();
   const [message, setMessage] = useState("Preparing system...");
-  
+  console.log(dbConfig);
+
   // Build Worker
   useEffect(() => {
     if (!dbConfig) return;
-    setRecords(undefined);
-    setMessage("Connecting to database...");
-    createDbWorker([dbConfig], sqlWorkerUrl, sqlWasmUrl, maxBytesToRead)
-      .then((worker) => {
-        setWorker(worker);
-      })
-      .catch((e) => {
-        console.error(e);
-        setMessage(`Failed to setup DB: ${e}`);
-      });
+    SPL()
+      .then((spl) =>
+        spl
+          .mount("data", [
+            {
+              name: "london_boroughs",
+              data: dbConfig.config.url,
+            },
+          ])
+          .db()
+      )
+      .then(setWorker);
   }, [JSON.stringify(dbConfig)]);
 
   // Run Query
@@ -38,18 +43,16 @@ export function useQuery(query, dbConfig) {
     setRecords(undefined);
     setMessage("Running query...");
     console.log(`Running query ${query}`);
-    worker.db.exec(query).then(async (rows) => {
-      const row = rows.pop();
-      if (!row) return setRecords(undefined);
-      setRecords(buildRecords(row));
-
-      // worker.worker.bytesRead is a Promise for the number of bytes read by the worker.
-      // if a request would cause it to exceed maxBytesToRead, that request will throw a SQLite disk I/O error.
-      setMessage(`${await worker.worker.bytesRead} bytes read.`);
-
-      // you can reset bytesRead by assigning to it:
-      // worker.worker.bytesRead = 0;
-    });
+    worker
+      .exec(query)
+      .get.first.then((record) => {
+        console.log({ record });
+        setRecords(record);
+      })
+      .catch((e) => {
+        console.error(e);
+        setMessage(e);
+      });
   }, [query, worker]);
 
   return [records, message];

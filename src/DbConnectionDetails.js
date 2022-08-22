@@ -3,7 +3,7 @@ import defaultDbUrl from "url:../stac.sqlite";
 import defaultSpatialDbUrl from "url:../db_large.sqlite";
 
 export const DbConnectionDetails = ({ onSubmit }) => {
-  const [dbUrl, setDbUrl] = useState(defaultDbUrl);
+  const [dbUrl, setDbUrl] = useState(defaultSpatialDbUrl);
   const [requestChunkSize, setRequestChunkSize] = useState(4096);
 
   const submitDetails = () => {
