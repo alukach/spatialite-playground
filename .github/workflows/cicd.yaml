@@ -20,7 +20,7 @@ jobs:
 
       - name: Install and Build 🔧
         env:
-          MEDIA_BASE: "https://media.githubusercontent.com/media/${{ github.repository }}/${{ github.ref_name }}/"
+          MEDIA_BASE: "https://media.githubusercontent.com/media/${{ github.repository }}/gh-pages/"
         run: |
           yarn install --frozen-lockfile  # npm ci
           yarn run build --public-url /${{ github.event.repository.name }}
