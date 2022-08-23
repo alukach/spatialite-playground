@@ -7,6 +7,7 @@
     "build": "parcel build"
   },
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.7.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "events": "^3.3.0",
@@ -16,8 +17,11 @@
     "stream-browserify": "^3.0.0"
   },
   "dependencies": {
+    "bootstrap": "^5.2.0",
+    "prismjs": "^1.28.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-simple-code-editor": "^0.13.0",
     "sql.js-httpvfs": "^0.8.11"
   }
 }
