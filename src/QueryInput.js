@@ -6,17 +6,16 @@ import "prismjs/components/prism-sql";
 import "prismjs/themes/prism-tomorrow.css"; //Example style, you can use another
 
 const defaultQuery = `
-SELECT 
+SELECT
   id,
   datetime
-FROM 
-  items 
-WHERE 
-  datetime >= '2021-12-12T00:00:00Z' 
-  AND 
-  datetime < '2021-12-12T01:00:00Z' 
+FROM
+  items
+WHERE
+  datetime >= '2021-12-12T00:00:00Z'
+  AND
+  datetime < '2021-12-12T01:00:00Z'
 LIMIT 10
-;
 `.trim();
 
 export function QueryInput({ onSubmit, className }) {
