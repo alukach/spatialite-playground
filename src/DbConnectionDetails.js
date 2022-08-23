@@ -31,22 +31,34 @@ export const DbConnectionDetails = ({ onSubmit }) => {
   return (
     <details>
       <summary>SQLite Connection Parameters</summary>
-      <label htmlFor="dburl-input">SQLite Database URL</label>
-      <input
-        id="dburl-input"
-        value={dbUrl}
-        onChange={(e) => setDbUrl(e.target.value)}
-        style={{ minWidth: "100%" }}
-      />
-      <label htmlFor="chunksize-input">Request Chunk Size</label>
-      <input
-        id="chunksize-input"
-        type="number"
-        value={requestChunkSize}
-        onChange={(e) => setRequestChunkSize(e.target.value)}
-        style={{ minWidth: "100%" }}
-      />
-      <button onClick={submitDetails}>Save</button>
+      <div className="form-floating">
+        <input
+          id="dburl-input"
+          className="form-control font-monospace"
+          value={dbUrl}
+          onChange={(e) => setDbUrl(e.target.value)}
+        />
+        <label className="form-label" htmlFor="dburl-input">
+          SQLite Database URL
+        </label>
+      </div>
+      
+      <div className="form-floating">
+        <input
+          id="chunksize-input"
+          className="form-control font-monospace"
+          type="number"
+          value={requestChunkSize}
+          onChange={(e) => setRequestChunkSize(e.target.value)}
+          style={{ minWidth: "100%" }}
+        />
+        <label className="form-label" htmlFor="chunksize-input">
+          Request Chunk Size
+        </label>
+      </div>
+      <button className="btn btn-secondary btn-sm" onClick={submitDetails}>
+        Save
+      </button>
     </details>
   );
 };
