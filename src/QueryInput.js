@@ -10,6 +10,7 @@ WHERE
   datetime >= '2021-12-12T00:00:00Z' 
   AND 
   datetime < '2021-12-12T01:00:00Z' 
+LIMIT 10
 ;
 `.trim();
 
