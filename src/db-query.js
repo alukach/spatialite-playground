@@ -16,7 +16,7 @@ export function useQuery(query, dbConfig) {
   const [worker, setWorker] = useState();
   const [records, setRecords] = useState();
   const [message, setMessage] = useState("Preparing system...");
-  
+
   // Build Worker
   useEffect(() => {
     if (!dbConfig) return;
@@ -38,18 +38,24 @@ export function useQuery(query, dbConfig) {
     setRecords(undefined);
     setMessage("Running query...");
     console.log(`Running query ${query}`);
-    worker.db.exec(query).then(async (rows) => {
-      const row = rows.pop();
-      if (!row) return setRecords(undefined);
-      setRecords(buildRecords(row));
+    worker.db
+      .exec(query)
+      .then(async (rows) => {
+        const row = rows.pop();
+        if (!row) return setRecords(undefined);
+        setRecords(buildRecords(row));
 
-      // worker.worker.bytesRead is a Promise for the number of bytes read by the worker.
-      // if a request would cause it to exceed maxBytesToRead, that request will throw a SQLite disk I/O error.
-      setMessage(`${await worker.worker.bytesRead} bytes read.`);
+        // worker.worker.bytesRead is a Promise for the number of bytes read by the worker.
+        // if a request would cause it to exceed maxBytesToRead, that request will throw a SQLite disk I/O error.
+        setMessage(`${await worker.worker.bytesRead} bytes read.`);
 
-      // you can reset bytesRead by assigning to it:
-      // worker.worker.bytesRead = 0;
-    });
+        // you can reset bytesRead by assigning to it:
+        // worker.worker.bytesRead = 0;
+      })
+      .catch((e) => {
+        console.error(e);
+        setMessage(`Failed to query DB: ${e}`);
+      });
   }, [query, worker]);
 
   return [records, message];
