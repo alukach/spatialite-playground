@@ -5,11 +5,8 @@ import _defaultDbUrl from "url:../example.sqlite";
 // https://github.com/git-lfs/git-lfs/issues/1342#issuecomment-467321479
 let defaultDbUrl = _defaultDbUrl;
 if (process.env.MEDIA_BASE) {
-  const filepath = new URL(_defaultDbUrl).pathname.slice(1);
-  defaultDbUrl = new URL(
-    filepath.split("/").pop(), // HACK: Only preserves filename, disregards rest of path
-    process.env.MEDIA_BASE
-  ).toString();
+  const filepath = _defaultDbUrl.slice(window.location.href.length);
+  defaultDbUrl = new URL(filepath, process.env.MEDIA_BASE).toString();
 }
 
 export const DbConnectionDetails = ({ onSubmit }) => {
