@@ -2,10 +2,6 @@ import { useEffect, useState } from "react";
 
 import SPL from "spl.js";
 
-import sqlWasmUrl from "url:spl.js/dist/spl.wasm";
-
-let maxBytesToRead = 10 * 1024 * 1024; // optional, defaults to Infinity
-
 /**
  *
  * @param {string} query
@@ -20,17 +16,21 @@ export function useQuery(query, dbConfig) {
   useEffect(() => {
     if (!dbConfig) return;
     SPL()
-      .then((spl) =>
+      .then(async (spl) =>
         spl
-          .mount("data", [
+          .mount("db", [
             {
-              name: "london_boroughs",
+              name: "data",
               data: dbConfig.config.url,
             },
           ])
-          .db()
+          .db("file:db/data?immutable=1")
       )
-      .then(setWorker);
+      .then(setWorker)
+      .catch((e) => {
+        setMessage(`Failed to setup DB: ${e}`);
+        throw e;
+      });
   }, [JSON.stringify(dbConfig)]);
 
   // Run Query
@@ -41,10 +41,11 @@ export function useQuery(query, dbConfig) {
     console.log(`Running query ${query}`);
     worker
       .exec(query)
-      .get.first.then((record) => {
-        console.log({ record });
-        setRecords(record);
+      .get.objs.then((records) => {
+        console.log({ records });
+        return records;
       })
+      .then(setRecords)
       .catch((e) => {
         console.error(e);
         setMessage(e);
@@ -52,10 +53,4 @@ export function useQuery(query, dbConfig) {
   }, [query, worker]);
 
   return [records, message];
-}
-
-function buildRecords({ columns, values }) {
-  return values.map((value) =>
-    Object.fromEntries(value.map((v, i) => [columns[i], v]))
-  );
 }

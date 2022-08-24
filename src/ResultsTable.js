@@ -1,7 +1,7 @@
 const stacUrl = "https://csdap.earthdata.nasa.gov/pgstac";
 
 export function ResultsTable({ records, className }) {
-  const keys = Object.keys(records[0]);
+  const keys = records.length ? Object.keys(records[0]) : [];
 
   return (
     <table className={className}>
