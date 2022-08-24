@@ -1,4 +1,8 @@
-import { useEffect, useState } from "react";
+import Editor from "react-simple-code-editor";
+import { highlight, languages } from "prismjs/components/prism-core";
+
+import "prismjs/components/prism-sql";
+import "prismjs/themes/prism-tomorrow.css"; //Example style, you can use another
 
 const defaultQuery = `
   SELECT
@@ -44,17 +48,19 @@ export function QueryInput({ onSubmit, className }) {
 
   return (
     <div className={`d-grid ${className}`}>
-      <label htmlFor="query-input">Query</label>
-      <textarea
+      <label className="form-label" htmlFor="query-input">
+        Query
+      </label>
+      <Editor
         id="query-input"
-        className="form-control font-monospace"
+        className="form-control font-monospace bg-dark text-light"
         style={{ minWidth: "100%" }}
-        rows={10}
-        cols={40}
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        padding={10}
+        onValueChange={setQuery}
         data-gramm="false" // Disable grammarly
-      ></textarea>
+        highlight={(code) => highlight(code, languages.sql)}
+      />
 
       <button
         className="btn btn-primary btn-sm btn-block"

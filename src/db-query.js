@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 
 import SPL from "spl.js";
-import { createDbWorker } from "sql.js-httpvfs";
 
-import sqlWorkerUrl from "url:sql.js-httpvfs/dist/sqlite.worker.js";
-// import sqlWasmUrl from "url:sql.js-httpvfs/dist/sql-wasm.wasm";
 import sqlWasmUrl from "url:spl.js/dist/spl.wasm";
 
 let maxBytesToRead = 10 * 1024 * 1024; // optional, defaults to Infinity
@@ -18,7 +15,6 @@ export function useQuery(query, dbConfig) {
   const [worker, setWorker] = useState();
   const [records, setRecords] = useState();
   const [message, setMessage] = useState("Preparing system...");
-  console.log(dbConfig);
 
   // Build Worker
   useEffect(() => {
