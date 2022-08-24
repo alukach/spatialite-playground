@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs/components/prism-core";
 
@@ -6,13 +7,13 @@ import "prismjs/themes/prism-tomorrow.css"; //Example style, you can use another
 
 const defaultQuery = `
   SELECT
-      name,
+      id,
       AsGeoJSON(geometry)
   FROM
-      pois_polygon
+      stac
   WHERE
       MBRIntersects(
-          BuildMBR(575800, 244739, 575902, 244647),
+          BuildMBR(-127, 32, -114, 42),
           geometry
       )
   LIMIT
