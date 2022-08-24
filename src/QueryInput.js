@@ -5,20 +5,7 @@ import { highlight, languages } from "prismjs/components/prism-core";
 import "prismjs/components/prism-sql";
 import "prismjs/themes/prism-tomorrow.css"; //Example style, you can use another
 
-const defaultQuery = `
-  SELECT
-      id,
-      AsGeoJSON(geometry)
-  FROM
-      stac
-  WHERE
-      MBRIntersects(
-          BuildMBR(-127, 32, -114, 42),
-          geometry
-      )
-  LIMIT
-    10
-`.trim();
+const defaultQuery = `SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name`.trim();
 
 export function QueryInput({ onSubmit, className }) {
   const [query, setQuery] = useState(defaultQuery);
