@@ -42,10 +42,9 @@ export function useQuery(query, dbConfig) {
     worker
       .exec(query)
       .get.objs.then((records) => {
-        console.log({ records });
-        return records;
+        if (!records.length) setMessage("No records returned.");
+        setRecords(records);
       })
-      .then(setRecords)
       .catch((e) => {
         console.error(e);
         setMessage(e);
