@@ -4,6 +4,9 @@ import { LngLatBounds } from "mapbox-gl";
 
 const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN;
 
+const flattenCoords = (coords) =>
+  coords.length === 2 ? coords : coords.map(flattenCoords);
+
 export const ResultsMap = ({ records }) => {
   const [bounds, setBounds] = useState();
   const mapRef = useRef();
@@ -15,8 +18,10 @@ export const ResultsMap = ({ records }) => {
   const geojson = useMemo(() => {
     const bounds = new LngLatBounds();
     for (const record of records) {
-      for (const coord of record.geometry.coordinates) {
-        bounds.extend(coord);
+      for (const coord_pair of flattenCoords(
+        record.geometry.coordinates
+      ).flat()) {
+        bounds.extend(coord_pair);
       }
     }
     setBounds(bounds);
@@ -43,7 +48,13 @@ export const ResultsMap = ({ records }) => {
           type="fill"
           paint={{
             "fill-color": "red",
-            "fill-opacity": 0.35,
+            "fill-opacity": [
+              "match",
+              ["geometry-type"],
+              ["MultiLineString", "LineString"],
+              0,
+              0.2,
+            ],
           }}
         />
         <Layer
