@@ -7,16 +7,20 @@ import "prismjs/themes/prism-tomorrow.css"; //Example style, you can use another
 
 const defaultQuery = `
 SELECT
-    id,
-    collection,
-    geometry
+  id,
+  collection,
+  geometry
 FROM
-    items
+  items
 WHERE
-    MBRIntersects(
-        BuildMBR(-127, 32, -114, 42),
-        geometry
-    )
+  MBRIntersects(
+    BuildMBR(-127, 32, -114, 42),
+    geometry
+  )
+  AND
+  datetime >= '2021-12-12'
+  AND
+  datetime < '2021-12-13'
 LIMIT
   10
 `.trim();
