@@ -8,7 +8,7 @@ export function App() {
   const [dbConnParams, setDbConnParams] = useState();
   const [query, setQuery] = useState();
   const [records, message] = useQuery(query, dbConnParams);
-  
+
   return (
     <div className="container">
       <DbConnectionDetails onSubmit={setDbConnParams} />
