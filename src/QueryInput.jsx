@@ -8,21 +8,21 @@ import "prismjs/themes/prism-tomorrow.css"; //Example style, you can use another
 const defaultQuery = `
 SELECT
   id,
-  collection,
+  datetime,
   geometry
 FROM
   items
 WHERE
   MBRIntersects(
-    BuildMBR(-127, 32, -114, 42),
+    BuildMBR(-127.45, 24.09, -62.41, 51.32),
     geometry
   )
   AND
-  datetime >= '2021-12-12'
+  datetime >= '2019-02-05'
   AND
-  datetime < '2021-12-13'
+  datetime < '2019-02-06'
 LIMIT
-  10
+  1000
 `.trim();
 
 export function QueryInput({ onSubmit, className }) {
