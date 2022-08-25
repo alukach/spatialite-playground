@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import _defaultDbUrl from "url:../example.sqlite";
+import _defaultDbUrl from "url:../spatial.sqlite";
 
 // Hack to serve SQLite file from Github LFS
 // https://github.com/git-lfs/git-lfs/issues/1342#issuecomment-467321479

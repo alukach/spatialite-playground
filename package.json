@@ -22,6 +22,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-simple-code-editor": "^0.13.0",
-    "sql.js-httpvfs": "^0.8.11"
+    "spl.js": "^0.1.0-beta.4"
   }
 }

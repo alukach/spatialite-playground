@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs/components/prism-core";
 
@@ -7,15 +7,18 @@ import "prismjs/themes/prism-tomorrow.css"; //Example style, you can use another
 
 const defaultQuery = `
 SELECT
-  id,
-  datetime
+    id,
+    collection,
+    geometry
 FROM
-  items
+    items
 WHERE
-  datetime >= '2021-12-12T00:00:00Z'
-  AND
-  datetime < '2021-12-12T01:00:00Z'
-LIMIT 10
+    MBRIntersects(
+        BuildMBR(-127, 32, -114, 42),
+        geometry
+    )
+LIMIT
+  10
 `.trim();
 
 export function QueryInput({ onSubmit, className }) {
