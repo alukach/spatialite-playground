@@ -2,16 +2,18 @@
 
 ## Setup
 
-
-Load an example NDJSON file into a sqlite datase:
+Load an example NDJSON file into a sqlite database:
 
 ```sh
-cat data.ndjs | jq -c 'with_entries(select([.key] | inside(["id", "collection", "datetime"])))' |
-npx -p @ndjson-utils/sqlite to-sql -t items -f example.sqlite -pk id
+zcat < many-stac-items.ndjs.gz | geojson-to-sqlite spatial.sqlite items - --nl --pk=id --spatialite --spatial-index
 ```
 
-Prepare a database:
+Index commonly searched properties:
 
-```
-sqlite3 example.sqlite "CREATE INDEX IF NOT EXISTS datetime ON items(datetime); vacuum"
+```sh
+sqlite3 -cmd "
+    CREATE INDEX IF NOT EXISTS idx_datetime ON items(datetime); 
+    CREATE INDEX IF NOT EXISTS idx_collection ON items(collection); 
+    vacuum;
+" spatial.sqlite
 ```
