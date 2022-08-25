@@ -13,7 +13,7 @@ Index commonly searched properties:
 ```sh
 sqlite3 -cmd "
     CREATE INDEX IF NOT EXISTS idx_datetime ON items(datetime); 
-    -- CREATE INDEX IF NOT EXISTS idx_collection ON items(collection); 
+    CREATE INDEX IF NOT EXISTS idx_collection ON items(collection); 
     vacuum;
 " spatial.sqlite
 ```
