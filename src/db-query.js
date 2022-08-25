@@ -15,6 +15,7 @@ export function useQuery(query, dbConfig) {
   // Build Worker
   useEffect(() => {
     if (!dbConfig) return;
+    setRecords(undefined)
     SPL()
       .then(async (spl) =>
         spl
@@ -29,7 +30,6 @@ export function useQuery(query, dbConfig) {
       .then(setWorker)
       .catch((e) => {
         setMessage(`Failed to setup DB: ${e}`);
-        throw e;
       });
   }, [JSON.stringify(dbConfig)]);
 
@@ -43,11 +43,13 @@ export function useQuery(query, dbConfig) {
       .exec(query)
       .get.objs.then((records) => {
         if (!records.length) setMessage("No records returned.");
+        setMessage("Complete.");
         setRecords(records);
       })
       .catch((e) => {
         console.error(e);
         setMessage(e);
+        setRecords(undefined);
       });
   }, [query, worker]);
 
