@@ -6,3 +6,4 @@ dist
 *.ndjson
 *.ndjs
 *.gz
+.env
