@@ -22,7 +22,7 @@ WHERE
   AND
   datetime < '2019-02-06'
 LIMIT
-  1000
+  250
 `.trim();
 
 export function QueryInput({ onSubmit, className }) {
