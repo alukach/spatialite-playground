@@ -18,9 +18,11 @@
   },
   "dependencies": {
     "bootstrap": "^5.2.0",
+    "mapbox-gl": "^2.10.0",
     "prismjs": "^1.28.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-map-gl": "^7.0.19",
     "react-simple-code-editor": "^0.13.0",
     "spl.js": "^0.1.0-beta.4"
   }
