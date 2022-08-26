@@ -8,6 +8,10 @@ if (process.env.MEDIA_BASE) {
   const filepath = _defaultDbUrl.slice(window.location.href.length);
   defaultDbUrl = new URL(filepath, process.env.MEDIA_BASE).toString();
 }
+const queryParamUrl = new URL(window.location).searchParams.get("url");
+if (queryParamUrl) {
+  defaultDbUrl = queryParamUrl;
+}
 
 export const DbConnectionDetails = ({ onSubmit }) => {
   const [dbUrl, setDbUrl] = useState(defaultDbUrl);
@@ -42,7 +46,7 @@ export const DbConnectionDetails = ({ onSubmit }) => {
           SQLite Database URL
         </label>
       </div>
-      
+
       <div className="form-floating">
         <input
           id="chunksize-input"
