@@ -1,4 +1,4 @@
-const stacUrl = "https://csdap.earthdata.nasa.gov/pgstac";
+const stacUrl = process.env.STAC_URL;
 
 export function ResultsTable({ records, className }) {
   const keys = records.length ? Object.keys(records[0]) : [];

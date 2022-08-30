@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 
-const urlQueryParamKey = "url";
+const dbUrlQueryParamKey = "db";
+
+const defaultDbUrl = process.env.STAC_URL;
 
 export const DbConnectionDetails = ({ onSubmit }) => {
   const [dbUrl, setDbUrl] = useState(
-    new URL(window.location).searchParams.get(urlQueryParamKey) ||
-    "https://render.alukach.workers.dev/spatial.sqlite"
+    new URL(window.location).searchParams.get(dbUrlQueryParamKey) ||
+      defaultDbUrl
   );
 
   const submitDetails = () => {
@@ -13,7 +15,7 @@ export const DbConnectionDetails = ({ onSubmit }) => {
 
     // Set URL to reflect db URL
     const queryParams = new URLSearchParams(window.location.search);
-    queryParams.set(urlQueryParamKey, dbUrl);
+    queryParams.set(dbUrlQueryParamKey, dbUrl);
     history.replaceState(null, null, `?${queryParams}`);
   };
 
