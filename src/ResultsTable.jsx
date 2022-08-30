@@ -1,6 +1,4 @@
-const stacUrl = process.env.STAC_URL;
-
-export function ResultsTable({ records, className }) {
+export function ResultsTable({ records, className, stacUrl }) {
   const keys = records.length ? Object.keys(records[0]) : [];
 
   return (

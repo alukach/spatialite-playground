@@ -6,13 +6,13 @@ import { ResultsTable } from "./ResultsTable";
 import { ResultsMap } from "./ResultsMap";
 
 export function App() {
-  const [dbUrl, setDbUrl] = useState();
+  const [params, setParams] = useState();
   const [query, setQuery] = useState();
-  const [records, message] = useQuery(query, dbUrl);
+  const [records, message] = useQuery(query, params.dbUrl);
 
   return (
     <div className="container">
-      <DbConnectionDetails onSubmit={setDbUrl} />
+      <DbConnectionDetails onSubmit={setParams} />
       <QueryInput onSubmit={setQuery} className="my-2" />
       <code>{message}</code>
       {records && records.length && records[0].hasOwnProperty("geometry") && (
@@ -21,6 +21,7 @@ export function App() {
       {records && (
         <ResultsTable
           records={records}
+          stacUrl={params.stacUrl}
           className="table table-hover table-striped mt-2"
         />
       )}

@@ -1,27 +1,28 @@
 import { useEffect, useState } from "react";
 
+const stacUrlQueryParamKey = "stac";
 const dbUrlQueryParamKey = "db";
-
-const defaultDbUrl = process.env.STAC_URL;
+const initialSearchParams = new URL(window.location).searchParams;
 
 export const DbConnectionDetails = ({ onSubmit }) => {
+  const [stacUrl, setStacUrl] = useState(
+    initialSearchParams.get(stacUrlQueryParamKey) || process.env.STAC_URL
+  );
   const [dbUrl, setDbUrl] = useState(
-    new URL(window.location).searchParams.get(dbUrlQueryParamKey) ||
-      defaultDbUrl
+    initialSearchParams.get(dbUrlQueryParamKey) || process.env.DB_URL
   );
 
   const submitDetails = () => {
-    onSubmit(dbUrl);
+    onSubmit({ dbUrl, stacUrl });
 
     // Set URL to reflect db URL
     const queryParams = new URLSearchParams(window.location.search);
     queryParams.set(dbUrlQueryParamKey, dbUrl);
+    queryParams.set(dbUrlQueryParamKey, dbUrl);
     history.replaceState(null, null, `?${queryParams}`);
   };
 
-  useEffect(() => {
-    submitDetails();
-  }, []);
+  useEffect(submitDetails, []);
 
   return (
     <details>
@@ -35,6 +36,17 @@ export const DbConnectionDetails = ({ onSubmit }) => {
         />
         <label className="form-label" htmlFor="dburl-input">
           SQLite Database URL
+        </label>
+      </div>
+      <div className="form-floating">
+        <input
+          id="stacurl-input"
+          className="form-control font-monospace"
+          value={stacUrl}
+          onChange={(e) => setStacUrl(e.target.value)}
+        />
+        <label className="form-label" htmlFor="stacurl-input">
+          STAC URL
         </label>
       </div>
 
