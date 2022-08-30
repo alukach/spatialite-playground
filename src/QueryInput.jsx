@@ -11,12 +11,16 @@ SELECT
   collection,
   geometry
 FROM
-  item
+  items
 WHERE
   MBRIntersects(
     BuildMBR(-127.45, 24.09, -62.41, 51.32),
     geometry
   )
+  AND
+  datetime < '2020-01-01'
+ORDER BY
+  datetime DESC
 LIMIT
   25
 `.trim();
