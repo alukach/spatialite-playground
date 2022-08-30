@@ -4,12 +4,12 @@ const stacUrlQueryParamKey = "stac";
 const dbUrlQueryParamKey = "db";
 const initialSearchParams = new URL(window.location).searchParams;
 
-export const DbConnectionDetails = ({ onSubmit }) => {
+export const DbConnectionDetails = ({ onSubmit, initialParams }) => {
   const [stacUrl, setStacUrl] = useState(
-    initialSearchParams.get(stacUrlQueryParamKey) || process.env.STAC_URL
+    initialSearchParams.get(stacUrlQueryParamKey) || initialParams.stacUrl
   );
   const [dbUrl, setDbUrl] = useState(
-    initialSearchParams.get(dbUrlQueryParamKey) || process.env.DB_URL
+    initialSearchParams.get(dbUrlQueryParamKey) || initialParams.dbUrl
   );
 
   const submitDetails = () => {
@@ -18,7 +18,7 @@ export const DbConnectionDetails = ({ onSubmit }) => {
     // Set URL to reflect db URL
     const queryParams = new URLSearchParams(window.location.search);
     queryParams.set(dbUrlQueryParamKey, dbUrl);
-    queryParams.set(dbUrlQueryParamKey, dbUrl);
+    queryParams.set(stacUrlQueryParamKey, stacUrl);
     history.replaceState(null, null, `?${queryParams}`);
   };
 
