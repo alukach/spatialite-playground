@@ -7,14 +7,14 @@ import SPL from "spl.js";
  * @param {string} query
  * @returns
  */
-export function useQuery(query, dbConfig) {
+export function useQuery(query, dbUrl) {
   const [worker, setWorker] = useState();
   const [records, setRecords] = useState();
   const [message, setMessage] = useState("Preparing system...");
 
   // Build Worker
   useEffect(() => {
-    if (!dbConfig) return;
+    if (!dbUrl) return;
     setRecords(undefined)
     SPL()
       .then(async (spl) =>
@@ -22,7 +22,7 @@ export function useQuery(query, dbConfig) {
           .mount("db", [
             {
               name: "data",
-              data: dbConfig.config.url,
+              data: dbUrl,
             },
           ])
           .db("file:db/data?immutable=1")
@@ -31,7 +31,7 @@ export function useQuery(query, dbConfig) {
       .catch((e) => {
         setMessage(`Failed to setup DB: ${e}`);
       });
-  }, [JSON.stringify(dbConfig)]);
+  }, [dbUrl]);
 
   // Run Query
   useEffect(() => {
